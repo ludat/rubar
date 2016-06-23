@@ -1,0 +1,10 @@
+sudo: false
+
+language: rust
+rust: nightly # or stable
+
+addons:
+  apt:
+    packages:
+      - libcairo2-dev
+      - libx11-dev
