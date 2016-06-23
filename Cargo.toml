@@ -1,0 +1,14 @@
+[package]
+name = "rubar"
+version = "0.1.0"
+authors = ["Lucas David Traverso <lucas6246@gmail.com>"]
+
+description = "Status bar for x11 with the power of graphics"
+repository = "https://github.com/ludat/rubar"
+license = "MIT"
+# homepage = ""
+# documentation = ""
+
+[dependencies]
+cairo-rs = { git = "https://github.com/ludat/cairo", features = ["xlib"]}
+x11 = "2.6.1"
