@@ -2,97 +2,70 @@ extern crate cairo;
 extern crate x11;
 extern crate glib;
 
-use x11::xlib::*;
+use std::io;
+use std::io::prelude::*;
 
 use std::f64::consts::PI;
 use cairo::ffi::*;
 use cairo::{Context, Surface};
 use cairo::enums::{FontSlant, FontWeight};
 
-use std::ptr::{
-    null,
-    null_mut,
-};
-use std::mem::zeroed;
 
-use glib::translate::FromGlibPtr;
-use std::os::raw::c_uint;
+mod window;
+use window::Window;
 
-const WIDTH: c_uint = 640;
-const HEIGHT: c_uint = 480;
+const WIDTH: i32 = 1000;
+const HEIGHT: i32 = 20;
 
 fn main() {
-    unsafe {
-        println!("Start");
-        let display = XOpenDisplay(null());
+    println!("get");
 
-        if display == null_mut() { panic!("Failed to open display"); }
+    let mut w = Window::new("title", WIDTH as u32, HEIGHT as u32);
+    w.show();
 
-        let screen = XDefaultScreen(display);
-        let root = XRootWindow(display, screen);
-        let white_pixel = XWhitePixel(display, screen);
-
-        let mut attributes: XSetWindowAttributes = zeroed();
-        attributes.background_pixel = white_pixel;
-
-        let window = XCreateWindow(
-            display, // display
-            root, // root window
-            0, // x position
-            0, // y position
-            WIDTH, // width
-            HEIGHT, //height
-            0, // border width
-            XDefaultDepth(display, screen), // depth
-            CopyFromParent as c_uint, // class
-            XDefaultVisual(display, screen),
-            CWBackPixel,
-            &mut attributes
-        );
-
-        // XSelectInput(display, window, ButtonPressMask | KeyPressMask);
-        XMapWindow(display, window);
-
-
+    println!("set");
+    let sfc: Surface = unsafe {
+        use x11::xlib::XDefaultVisual;
+        use glib::translate::FromGlibPtr;
         let sfc: *mut cairo_surface_t = cairo_xlib_surface_create(
-            display,
-            window,
-            XDefaultVisual(display, screen),
-            WIDTH as i32,
-            HEIGHT as i32
+            w.display,
+            w.window,
+            XDefaultVisual(w.display, w.screen),
+            WIDTH,
+            HEIGHT,
         );
-        cairo_xlib_surface_set_size(sfc, 300, 200);
-        let sfc: Surface = FromGlibPtr::from_glib_full(sfc);
+        FromGlibPtr::from_glib_full(sfc)
+    };
+    // cairo_xlib_surface_set_size(sfc, 2000, 1000);
     let cr = Context::new(&sfc);
 
-    // println!("size: {}x{}", )
-    println!("drawing");
 
-    cr.scale(500f64, 500f64);
+    println!("GO!");
+    let stdin = io::stdin();
+    for line in stdin.lock().lines() {
+        cr.set_source_rgb(0.0, 0.0, 0.0);
+        cr.rectangle (0.0, 0.0, WIDTH as f64, HEIGHT as f64);
+        cr.fill();
 
-    cr.select_font_face("Sans", FontSlant::Normal, FontWeight::Normal);
-    cr.set_font_size(0.35);
+        cr.set_source_rgb(1.0, 1.0, 1.0);
+        cr.arc(4., 53., 2., 0.0, PI * 200.);
+        cr.arc(27., 65., 2., 0.0, PI * 200.);
+        cr.fill();
 
-    cr.move_to(0.04, 0.53);
-    cr.show_text("Hello");
+        cr.select_font_face("Sans", FontSlant::Normal, FontWeight::Normal);
+        cr.set_font_size(15.);
 
-    cr.move_to(0.27, 0.65);
-    cr.text_path("void");
-    cr.set_source_rgb(0.5, 0.5, 1.0);
-    cr.fill_preserve();
-    cr.set_source_rgb(0.0, 0.0, 0.0);
-    cr.set_line_width(0.01);
-    cr.stroke();
+        cr.move_to(4., 13.);
+        cr.show_text(&line.unwrap());
 
-    cr.set_source_rgba(1.0, 0.2, 0.2, 0.6);
-    cr.arc(0.04, 0.53, 0.02, 0.0, PI * 2.);
-    cr.arc(0.27, 0.65, 0.02, 0.0, PI * 2.);
-    cr.fill();
-
-
-
-
-    std::thread::sleep_ms(2000);
-
-}
+        // cr.move_to(47., 13.);
+        // cr.text_path("void");
+        // cr.set_source_rgb(0.5, 0.5, 1.0);
+        // cr.fill_preserve();
+        // cr.set_source_rgb(1.0, 1.0, 1.0);
+        // cr.set_line_width(1.);
+        cr.stroke();
+        w.flush();
+        std::thread::sleep(std::time::Duration::from_secs(1));
+    }
 }
