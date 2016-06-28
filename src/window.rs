@@ -1,16 +1,8 @@
-// extern crate x11;
-use cairo;
-// extern crate libc;
-
 use std::ffi::CString;
-use std::ptr::{
-  null,
-  null_mut,
-};
-use std::mem::{zeroed, transmute};
+use std::ptr::{null, null_mut};
+use std::mem::zeroed;
 use std::os::raw::{c_uint, c_uchar};
-use x11::{xlib};
-use cairo::Context;
+use x11::xlib;
 
 /// Provides a basic framework for connecting to an X Display,
 /// creating a window, displaying it and running the event loop
@@ -33,8 +25,6 @@ impl Window {
             // Load atoms
             let wm_delete_window_str = CString::new("WM_DELETE_WINDOW").unwrap();
             let wm_protocols_str = CString::new("WM_PROTOCOLS").unwrap();
-
-
 
             let wm_delete_window = xlib::XInternAtom(
                 display, wm_delete_window_str.as_ptr(), xlib::False);
@@ -81,27 +71,27 @@ impl Window {
 
             println!("before");
 
-            let NET_WM_WINDOW_TYPE = CString::new("_NET_WM_WINDOW_TYPE").unwrap();
-            let NET_WM_WINDOW_TYPE_DOCK = CString::new("_NET_WM_WINDOW_TYPE_DOCK").unwrap();
-            let NET_WM_STATE = CString::new("_NET_WM_STATE").unwrap();
-            let NET_WM_STATE_ABOVE = CString::new("_NET_WM_STATE_ABOVE").unwrap();
-            let NET_WM_STATE_STICKY = CString::new("_NET_WM_STATE_STICKY").unwrap();
-            let NET_WM_STRUT = CString::new("_NET_WM_STRUT").unwrap();
-            let NET_WM_STRUT_PARTIAL = CString::new("_NET_WM_STRUT_PARTIAL").unwrap();
-            let CARDINAL = CString::new("CARDINAL").unwrap();
-            let ATOM = CString::new("ATOM").unwrap();
+            let net_wm_window_type = CString::new("_NET_WM_WINDOW_TYPE").unwrap();
+            let net_wm_window_type_dock = CString::new("_NET_WM_WINDOW_TYPE_DOCK").unwrap();
+            let net_wm_state = CString::new("_NET_WM_STATE").unwrap();
+            let net_wm_state_above = CString::new("_NET_WM_STATE_ABOVE").unwrap();
+            let net_wm_state_sticky = CString::new("_NET_WM_STATE_STICKY").unwrap();
+            let net_wm_strut = CString::new("_NET_WM_STRUT").unwrap();
+            let net_wm_strut_partial = CString::new("_NET_WM_STRUT_PARTIAL").unwrap();
+            let cardinal = CString::new("CARDINAL").unwrap();
+            let atom = CString::new("ATOM").unwrap();
 
 
             xlib::XChangeProperty(
                 display, window,
                 xlib::XInternAtom(
-                    display, NET_WM_WINDOW_TYPE.as_ptr(), xlib::False),
+                    display, net_wm_window_type.as_ptr(), xlib::False),
                 xlib::XInternAtom(
-                    display, ATOM.as_ptr(), xlib::False),
+                    display, atom.as_ptr(), xlib::False),
                 32, xlib::PropModeReplace,
                 &xlib::XInternAtom(
                     display,
-                    NET_WM_WINDOW_TYPE_DOCK.as_ptr(),
+                    net_wm_window_type_dock.as_ptr(),
                     xlib::False) as *const u64 as *const c_uchar,
                 // thd as *const c_uchar,
                 1
@@ -111,17 +101,17 @@ impl Window {
                 display, window,
                 xlib::XInternAtom(
                     display,
-                    NET_WM_STATE.as_ptr(),
+                    net_wm_state.as_ptr(),
                     xlib::False),
                 xlib::XInternAtom(
                     display,
-                    ATOM.as_ptr(),
+                    atom.as_ptr(),
                     xlib::False),
                 32,
                 xlib::PropModeReplace,
                 &xlib::XInternAtom(
                     display,
-                    NET_WM_STATE_ABOVE.as_ptr(),
+                    net_wm_state_above.as_ptr(),
                     xlib::False) as *const u64 as *const c_uchar,
                 1
             );
@@ -131,17 +121,17 @@ impl Window {
                 window,
                 xlib::XInternAtom(
                     display,
-                    NET_WM_STATE.as_ptr(),
+                    net_wm_state.as_ptr(),
                     xlib::False),
                 xlib::XInternAtom(
                     display,
-                    ATOM.as_ptr(),
+                    atom.as_ptr(),
                     xlib::False),
                 32,
                 xlib::PropModeAppend,
                 &xlib::XInternAtom(
                     display,
-                    NET_WM_STATE_STICKY.as_ptr(),
+                    net_wm_state_sticky.as_ptr(),
                     xlib::False) as *const u64 as *const c_uchar,
                 1
             );
@@ -155,11 +145,11 @@ impl Window {
                 window,
                 xlib::XInternAtom(
                     display,
-                    NET_WM_STRUT_PARTIAL.as_ptr(),
+                    net_wm_strut_partial.as_ptr(),
                     xlib::False),
                 xlib::XInternAtom(
                     display,
-                    CARDINAL.as_ptr(),
+                    cardinal.as_ptr(),
                     xlib::False),
                 32,
                 xlib::PropModeReplace,
@@ -173,11 +163,11 @@ impl Window {
                 window,
                 xlib::XInternAtom(
                     display,
-                    NET_WM_STRUT.as_ptr(),
+                    net_wm_strut.as_ptr(),
                     xlib::False),
                 xlib::XInternAtom(
                     display,
-                    CARDINAL.as_ptr(),
+                    cardinal.as_ptr(),
                     xlib::False),
                 32,
                 xlib::PropModeReplace,

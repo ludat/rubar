@@ -4,8 +4,8 @@ extern crate glib;
 
 use std::io;
 use std::io::prelude::*;
-
 use std::f64::consts::PI;
+
 use cairo::ffi::*;
 use cairo::{Context, Surface};
 use cairo::enums::{FontSlant, FontWeight};
@@ -66,6 +66,5 @@ fn main() {
         // cr.set_line_width(1.);
         cr.stroke();
         w.flush();
-        std::thread::sleep(std::time::Duration::from_secs(1));
     }
 }
