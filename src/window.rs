@@ -1,3 +1,4 @@
+use cairo::*;
 use std::ffi::CString;
 use std::ptr::{null, null_mut};
 use std::mem::zeroed;
@@ -10,6 +11,8 @@ pub struct Window {
     pub display: *mut xlib::Display,
     pub window: xlib::Window,
     pub screen: i32,
+    surface: *mut cairo_surface_t,
+    context: *mut cairo_t,
 }
 
 impl Window {
@@ -175,26 +178,28 @@ impl Window {
                 4
             );
 
-            // TODO reomve this
-            // use std;
-            // std::thread::sleep(std::time::Duration::from_secs(10));
+            // show the window on the screen
+            xlib::XMapWindow(display, window);
 
-            Window{
+            let cairo_surface: *mut cairo_surface_t =
+                cairo_xlib_surface_create(
+                    display,
+                    window,
+                    xlib::XDefaultVisual(display, screen),
+                    width as i32,
+                    height as i32,
+                );
+            // cairo_xlib_surface_set_size(sfc, 2000, 1000);
+            let cairo_context = cairo_create(cairo_surface);
+
+            Window {
                 display: display,
                 window: window,
                 screen: screen,
-                // wm_protocols: wm_protocols,
-                // wm_delete_window: wm_delete_window
+                surface: cairo_surface,
+                context: cairo_context
             }
         }
-    }
-
-    /// Display the window
-    pub fn show(&mut self) {
-        unsafe {
-            xlib::XMapWindow(self.display, self.window);
-        }
-
     }
 
     /// Flush the X11 buffer
@@ -203,14 +208,24 @@ impl Window {
             xlib::XFlush(self.display);
         }
     }
+
+    pub fn draw<T: Drawable>(&mut self, drawable: &T, x: i32, y: i32) {
+        drawable._draw(self, x, y);
+    }
 }
 
 impl Drop for Window {
     /// Destroys the window and disconnects from the display
     fn drop(&mut self) {
         unsafe {
+            cairo_surface_destroy(self.surface);
+            cairo_destroy(self.context);
             xlib::XDestroyWindow(self.display, self.window);
             xlib::XCloseDisplay(self.display);
         }
     }
+}
+
+pub trait Drawable {
+    fn _draw(&self, w: &mut Window, x: i32, y: i32);
 }

@@ -2,7 +2,7 @@
 name = "rubar"
 version = "0.1.0"
 dependencies = [
- "cairo-rs 0.1.0 (git+https://github.com/ludat/cairo)",
+ "cairo-sys-rs 0.3.1 (git+https://github.com/ludat/cairo)",
  "glib 0.1.0 (git+https://github.com/gtk-rs/glib)",
  "x11 2.6.1 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
@@ -13,25 +13,9 @@ version = "0.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
-name = "c_vec"
-version = "1.0.12"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-
-[[package]]
-name = "cairo-rs"
-version = "0.1.0"
-source = "git+https://github.com/ludat/cairo#1b3d4b496b9d6bcd71b0d1f67ed50f746ea11240"
-dependencies = [
- "c_vec 1.0.12 (registry+https://github.com/rust-lang/crates.io-index)",
- "cairo-sys-rs 0.3.1 (git+https://github.com/ludat/cairo)",
- "glib 0.1.0 (git+https://github.com/gtk-rs/glib)",
- "libc 0.2.12 (registry+https://github.com/rust-lang/crates.io-index)",
-]
-
-[[package]]
 name = "cairo-sys-rs"
 version = "0.3.1"
-source = "git+https://github.com/ludat/cairo#1b3d4b496b9d6bcd71b0d1f67ed50f746ea11240"
+source = "git+https://github.com/ludat/cairo#175b9c610ec7b2227be96ef3d9f232abe8a39436"
 dependencies = [
  "libc 0.2.12 (registry+https://github.com/rust-lang/crates.io-index)",
  "pkg-config 0.3.8 (registry+https://github.com/rust-lang/crates.io-index)",

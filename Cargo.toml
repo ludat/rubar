@@ -10,6 +10,7 @@ license = "MIT"
 # documentation = ""
 
 [dependencies]
-cairo-rs = { git = "https://github.com/ludat/cairo", features = ["xlib"]}
+cairo-sys-rs = { git = "https://github.com/ludat/cairo", features = ["xlib"]}
+# cairo-rs = { path = "../mycairo/", features = ["xlib"]}
 glib = { git = "https://github.com/gtk-rs/glib" }
 x11 = "2.6.1"
