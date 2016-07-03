@@ -1,9 +1,9 @@
-use cairo::*;
 use std::ffi::CString;
 use std::ptr::{null, null_mut};
 use std::mem::zeroed;
 use std::os::raw::{c_uint, c_uchar};
 use x11::xlib;
+use cairo::*;
 
 /// Provides a basic framework for connecting to an X Display,
 /// creating a window, displaying it and running the event loop
@@ -11,8 +11,10 @@ pub struct Window {
     pub display: *mut xlib::Display,
     pub window: xlib::Window,
     pub screen: i32,
-    surface: *mut cairo_surface_t,
-    context: *mut cairo_t,
+    pub width: u32,
+    pub height: u32,
+    pub surface: *mut cairo_surface_t,
+    pub context: *mut cairo_t,
 }
 
 impl Window {
@@ -140,9 +142,9 @@ impl Window {
             );
 
             let strut_p: &[u64; 12] = &[
-                0,    0, 25, 0,
-                0,    0,  0, 0,
-                0, 1365,  0, 0 ];
+                0,            0, height as u64, 0,
+                0,            0,             0, 0,
+                0, width as u64,             0, 0 ];
             xlib::XChangeProperty(
                 display,
                 window,
@@ -196,6 +198,8 @@ impl Window {
                 display: display,
                 window: window,
                 screen: screen,
+                width: width,
+                height: height,
                 surface: cairo_surface,
                 context: cairo_context
             }
@@ -210,7 +214,21 @@ impl Window {
     }
 
     pub fn draw<T: Drawable>(&mut self, drawable: &T, x: i32, y: i32) {
-        drawable._draw(self, x, y);
+        unsafe {
+            cairo_move_to(self.context, x as f64, y as f64);
+            drawable._draw(self);
+        }
+    }
+
+    pub fn clear(&mut self) {
+        unsafe {
+            cairo_set_source_rgb(self.context, 0.0, 0.0, 0.0);
+            cairo_rectangle (self.context,
+                             0.0, 0.0,
+                             self.width as f64,
+                             self.height as f64);
+            cairo_fill(self.context);
+        }
     }
 }
 
@@ -227,5 +245,6 @@ impl Drop for Window {
 }
 
 pub trait Drawable {
-    fn _draw(&self, w: &mut Window, x: i32, y: i32);
+    unsafe fn _draw(&self, w: &mut Window);
+    // fn size(&self)
 }

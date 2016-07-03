@@ -1,13 +1,15 @@
 extern crate cairo_sys as cairo;
+extern crate pango_sys as pango;
 extern crate x11;
 extern crate glib;
 
 use std::io;
-use std::io::prelude::*;
+use std::io::BufRead;
 use std::f64::consts::PI;
 
-
-
+mod pangocairo_gen;
+mod drawables;
+use drawables::text::Text;
 mod window;
 use window::Window;
 
@@ -23,6 +25,11 @@ fn main() {
     println!("GO!");
     let stdin = io::stdin();
     for line in stdin.lock().lines() {
+        w.clear();
+        w.draw(
+            Text::new(&line.unwrap())
+                .font("Source Code Pro 12"),
+            0, 0);
         // cr.set_source_rgb(0.0, 0.0, 0.0);
         // cr.rectangle (0.0, 0.0, WIDTH as f64, HEIGHT as f64);
         // cr.fill();
@@ -45,6 +52,6 @@ fn main() {
         // cr.set_source_rgb(1.0, 1.0, 1.0);
         // cr.set_line_width(1.);
         // cr.stroke();
-        // w.flush();
+        w.flush();
     }
 }
