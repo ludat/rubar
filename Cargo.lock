@@ -39,7 +39,7 @@ dependencies = [
 [[package]]
 name = "glib"
 version = "0.1.0"
-source = "git+https://github.com/gtk-rs/glib#765192e04c6bdfc76536ae3406d64b73990c8d40"
+source = "git+https://github.com/gtk-rs/glib#9f77b36524b9bfb5196cba48fc25314cd5345664"
 dependencies = [
  "gio-sys 0.3.1 (git+https://github.com/gtk-rs/sys)",
  "glib-sys 0.3.1 (git+https://github.com/gtk-rs/sys)",

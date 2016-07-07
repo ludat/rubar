@@ -5,12 +5,11 @@ extern crate glib;
 
 use std::io;
 use std::io::BufRead;
-use std::f64::consts::PI;
 
 mod pangocairo_gen;
 mod drawables;
-use drawables::text::Text;
 mod window;
+mod draw;
 use window::Window;
 
 const WIDTH: i32 = 1000;
@@ -26,10 +25,7 @@ fn main() {
     let stdin = io::stdin();
     for line in stdin.lock().lines() {
         w.clear();
-        w.draw(
-            Text::new(&line.unwrap())
-                .font("Source Code Pro 12"),
-            0, 0);
+        w.draw(&line.unwrap().as_str(), 0, 0);
         // cr.set_source_rgb(0.0, 0.0, 0.0);
         // cr.rectangle (0.0, 0.0, WIDTH as f64, HEIGHT as f64);
         // cr.fill();
