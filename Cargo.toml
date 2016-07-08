@@ -18,8 +18,8 @@ pango = { git = "https://github.com/gtk-rs/pango" }
 glib = { git = "https://github.com/gtk-rs/glib" }
 gobject-sys = { git = "https://github.com/gtk-rs/sys" }
 pango-sys = { git = "https://github.com/gtk-rs/sys" }
+nom = "1.2.3"
 x11 = "2.6.1"
-combine = "2.0.0-beta"
 
 [build-dependencies]
 pkg-config = "0.3.8"

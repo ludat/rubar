@@ -1,3 +1,5 @@
+use std::fmt;
+
 use cairo::*;
 use pango::FontDescription;
 
@@ -56,6 +58,12 @@ impl ContextBuilder {
     pub fn push(&mut self, d: Box<Drawable>) -> &mut ContextBuilder {
         self.children.push(d);
         self
+    }
+}
+
+impl fmt::Debug for ContextBuilder {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "ContextBuilder")
     }
 }
 
