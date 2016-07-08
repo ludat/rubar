@@ -2,8 +2,11 @@
 name = "rubar"
 version = "0.1.0"
 dependencies = [
- "cairo-sys-rs 0.3.1 (git+https://github.com/ludat/cairo)",
+ "cairo-sys-rs 0.3.1 (git+https://github.com/gtk-rs/cairo)",
+ "combine 2.0.0-beta (registry+https://github.com/rust-lang/crates.io-index)",
  "glib 0.1.0 (git+https://github.com/gtk-rs/glib)",
+ "gobject-sys 0.3.1 (git+https://github.com/gtk-rs/sys)",
+ "pango 0.1.0 (git+https://github.com/gtk-rs/pango)",
  "pango-sys 0.3.1 (git+https://github.com/gtk-rs/sys)",
  "pkg-config 0.3.8 (registry+https://github.com/rust-lang/crates.io-index)",
  "x11 2.6.1 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -17,12 +20,17 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 [[package]]
 name = "cairo-sys-rs"
 version = "0.3.1"
-source = "git+https://github.com/ludat/cairo#1a4c410430a7744f690fb076b282a9996a77ec86"
+source = "git+https://github.com/gtk-rs/cairo#72857af40478d37a2159177fafe75ce10edfeb6f"
 dependencies = [
  "libc 0.2.13 (registry+https://github.com/rust-lang/crates.io-index)",
  "pkg-config 0.3.8 (registry+https://github.com/rust-lang/crates.io-index)",
  "x11 2.6.1 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
+
+[[package]]
+name = "combine"
+version = "2.0.0-beta"
+source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "gio-sys"
@@ -74,9 +82,14 @@ version = "0.2.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
-name = "nom"
-version = "1.2.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
+name = "pango"
+version = "0.1.0"
+source = "git+https://github.com/gtk-rs/pango#bb0a042378b4c60ce54f308f4405a7584a6fb1d7"
+dependencies = [
+ "glib 0.1.0 (git+https://github.com/gtk-rs/glib)",
+ "libc 0.2.13 (registry+https://github.com/rust-lang/crates.io-index)",
+ "pango-sys 0.3.1 (git+https://github.com/gtk-rs/sys)",
+]
 
 [[package]]
 name = "pango-sys"

@@ -1,53 +1,41 @@
 extern crate cairo_sys as cairo;
-extern crate pango_sys as pango;
-extern crate x11;
+extern crate pango;
+extern crate pango_sys;
 extern crate glib;
+extern crate gobject_sys as gobject;
+extern crate x11;
+extern crate combine;
 
 use std::io;
 use std::io::BufRead;
 
+use cairo::*;
 mod pangocairo_gen;
 mod drawables;
 mod window;
 mod draw;
+use draw::Color;
 use window::Window;
+use draw::Drawable;
+use drawables::{Context, ContextBuilder};
 
 const WIDTH: i32 = 1000;
 const HEIGHT: i32 = 20;
 
 fn main() {
-    println!("get");
-
     let mut w = Window::new("title", WIDTH as u32, HEIGHT as u32);
 
 
-    println!("GO!");
     let stdin = io::stdin();
     for line in stdin.lock().lines() {
+        let root = Context::new("Terminus 10", Color::white(), 0.0);
+        let mut base = ContextBuilder::empty();
+        base.push(Box::new(line.unwrap()));
         w.clear();
-        w.draw(&line.unwrap().as_str(), 0, 0);
-        // cr.set_source_rgb(0.0, 0.0, 0.0);
-        // cr.rectangle (0.0, 0.0, WIDTH as f64, HEIGHT as f64);
-        // cr.fill();
-
-        // cr.set_source_rgb(1.0, 1.0, 1.0);
-        // cr.arc(4., 53., 2., 0.0, PI * 200.);
-        // cr.arc(27., 65., 2., 0.0, PI * 200.);
-        // cr.fill();
-
-        // cr.select_font_face("Sans", FontSlant::Normal, FontWeight::Normal);
-        // cr.set_font_size(15.);
-
-        // cr.move_to(4., 13.);
-        // cr.show_text(&line.unwrap());
-
-        // cr.move_to(47., 13.);
-        // cr.text_path("void");
-        // cr.set_source_rgb(0.5, 0.5, 1.0);
-        // cr.fill_preserve();
-        // cr.set_source_rgb(1.0, 1.0, 1.0);
-        // cr.set_line_width(1.);
-        // cr.stroke();
+        unsafe {
+            cairo_move_to(w.context, 0.0, 0.0);
+            base._draw(&mut w, &root);
+        }
         w.flush();
     }
 }

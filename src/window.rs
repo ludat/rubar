@@ -5,9 +5,6 @@ use std::os::raw::{c_uint, c_uchar};
 use x11::xlib;
 use cairo::*;
 
-use drawables::{Context};
-use draw::Drawable;
-
 /// Provides a basic framework for connecting to an X Display,
 /// creating a window, displaying it and running the event loop
 pub struct Window {
@@ -213,30 +210,6 @@ impl Window {
     pub fn flush(&mut self) {
         unsafe {
             xlib::XFlush(self.display);
-        }
-    }
-
-    pub fn draw<T: Drawable>(&mut self, drawable: &T, x: i32, y: i32) {
-        unsafe {
-            cairo_move_to(self.context, x as f64, y as f64);
-            // drawable._draw(
-            //     self,
-            //     Context::new("Sans", "fuck fuck fuck", 0.0)
-            //         .add(Box::new("Hi humans"))
-            //         .add(Box::new("fucking shit"))
-            // );
-            let mut root = Context::new("Terminus 10", "fuck fuck fuck", 0.0);
-            root.add(Box::new("Fgy"))
-                .add(Box::new("LLLLL"))
-                .add(Box::new(*drawable))
-                ;
-
-            let mut c = Context::new("Sans 8", "", 0.0);
-            c.add(Box::new("LLLLL"));
-            root.add(Box::new(c));
-
-
-            root._draw(self, &root);
         }
     }
 
