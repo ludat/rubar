@@ -42,11 +42,26 @@ pub struct Color {
 }
 
 impl Color {
+    pub fn new(red: f64, green: f64, blue: f64) -> Color {
+        Color {
+            red: red,
+            green: green,
+            blue: blue,
+        }
+    }
+
     pub fn white() -> Color {
         Color {
             red: 1.0,
             green: 1.0,
             blue: 1.0,
+        }
+    }
+    pub fn grey() -> Color {
+        Color {
+            red: 0.5,
+            green: 0.5,
+            blue: 0.5,
         }
     }
     pub fn black() -> Color {
@@ -56,11 +71,47 @@ impl Color {
             blue: 0.0,
         }
     }
-    pub fn new(red: f64, green: f64, blue: f64) -> Color {
+
+    pub fn red() -> Color {
         Color {
-            red: red,
-            green: green,
-            blue: blue,
+            red: 1.0,
+            green: 0.0,
+            blue: 0.0,
+        }
+    }
+    pub fn green() -> Color {
+        Color {
+            red: 0.0,
+            green: 1.0,
+            blue: 0.0,
+        }
+    }
+    pub fn blue() -> Color {
+        Color {
+            red: 0.0,
+            green: 0.0,
+            blue: 1.0,
+        }
+    }
+    pub fn cyan() -> Color {
+        Color {
+            red: 0.0,
+            green: 1.0,
+            blue: 1.0,
+        }
+    }
+    pub fn yellow() -> Color {
+        Color {
+            red: 0.0,
+            green: 0.0,
+            blue: 1.0,
+        }
+    }
+    pub fn purple() -> Color {
+        Color {
+            red: 0.5,
+            green: 0.0,
+            blue: 0.5,
         }
     }
 }
