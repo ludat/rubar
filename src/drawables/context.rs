@@ -22,6 +22,13 @@ impl Context {
     }
 }
 
+pub struct ContextBuilder {
+    pub font: Option<FontDescription>,
+    pub color: Option<Color>,
+    pub alpha: Option<f64>,
+    pub children: Vec<Box<Drawable>>,
+}
+
 impl Drawable for ContextBuilder {
     unsafe fn _draw(&self, w: &mut Window, c: &Context) -> Size {
         let c = self.derive(c);
@@ -49,8 +56,7 @@ impl ContextBuilder {
     pub fn derive(&self, c: &Context) -> Context {
         // TODO impement some kind of smart pointer here because this is ugly
         Context {
-            // font: self.font.clone().unwrap_or(c.font.clone()),
-            font: c.font.clone(),
+            font: self.font.clone().unwrap_or(c.font.clone()),
             color: self.color.unwrap_or(c.color),
             alpha: self.alpha.unwrap_or(c.alpha),
         }
@@ -66,11 +72,3 @@ impl fmt::Debug for ContextBuilder {
         write!(f, "ContextBuilder")
     }
 }
-
-pub struct ContextBuilder {
-    pub font: Option<FontDescription>,
-    pub color: Option<Color>,
-    pub alpha: Option<f64>,
-    pub children: Vec<Box<Drawable>>,
-}
-
