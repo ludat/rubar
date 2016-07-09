@@ -1,9 +1,10 @@
 use std::ops::Add;
+use std::fmt::Debug;
 
 use window::Window;
 use drawables::Context;
 
-pub trait Drawable {
+pub trait Drawable : Debug {
     unsafe fn _draw(&self, w: &mut Window, c: &Context) -> Size;
     // fn size(&self)
 }

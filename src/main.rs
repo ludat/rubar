@@ -105,7 +105,7 @@ fn main() {
         let root = Context::new("Terminus 10", Color::white(), 0.0);
         let mut base = ContextBuilder::empty();
         if let IResult::Done("", children) = drawables(&line.unwrap()) {
-            // base.push(Box::new(line.unwrap()));
+            println!("{:?}", children);
             base.children = children;
             w.clear();
             unsafe {

@@ -1,4 +1,5 @@
 use std::ffi::CString;
+use std::fmt::Debug;
 
 use pango_sys::*;
 use pangocairo_gen::*;
@@ -11,7 +12,7 @@ use drawables::Context;
 use draw::Drawable;
 use draw::Size;
 
-impl<T> Drawable for T where T: AsRef<str> {
+impl<T> Drawable for T where T: AsRef<str> + Debug {
     unsafe fn _draw(&self, w: &mut Window, c: &Context) -> Size {
         let layout = pango_cairo_create_layout(w.context);
         pango_layout_set_text(
