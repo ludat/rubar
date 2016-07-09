@@ -107,7 +107,7 @@ fn main() {
         if let IResult::Done("", children) = drawables(&line.unwrap()) {
             println!("{:?}", children);
             base.children = children;
-            w.clear();
+            w.clear(Color::black());
             unsafe {
                 cairo_move_to(w.context, 0.0, 0.0);
                 base._draw(&mut w, &root);

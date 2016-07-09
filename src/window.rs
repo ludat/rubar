@@ -3,6 +3,8 @@ use std::ptr::{null, null_mut};
 use std::mem::zeroed;
 use std::os::raw::{c_uint, c_uchar};
 use x11::xlib;
+
+use draw::Color;
 use cairo::*;
 
 /// Provides a basic framework for connecting to an X Display,
@@ -213,9 +215,10 @@ impl Window {
         }
     }
 
-    pub fn clear(&mut self) {
+    pub fn clear(&mut self, color: Color) {
         unsafe {
-            cairo_set_source_rgb(self.context, 0.0, 0.0, 0.0);
+            cairo_set_source_rgb(
+                self.context, color.red, color.green, color.blue);
             cairo_rectangle (
                 self.context, 0.0, 0.0, self.width as f64, self.height as f64);
             cairo_fill(self.context);
