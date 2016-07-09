@@ -34,7 +34,7 @@ impl Add for Size {
     }
 }
 
-#[derive(Debug,Copy,Clone)]
+#[derive(Debug,Copy,Clone,PartialEq)]
 pub struct Color {
     pub red: f64,
     pub green: f64,
