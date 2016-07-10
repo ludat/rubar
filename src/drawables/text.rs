@@ -1,5 +1,6 @@
 use std::ffi::CString;
 
+use cairo::*;
 use pango_sys::*;
 use pangocairo_gen::*;
 use gobject::*;
@@ -9,11 +10,12 @@ use window::Window;
 
 use drawables::Config;
 use draw::Drawable;
-use draw::Size;
+use draw::{Size, Position};
 
 impl<T> Drawable for T where T: AsRef<str> {
-    fn draw(&self, w: &mut Window, c: &Config) -> Size {
+    fn draw(&self, w: &mut Window, c: &Config, p: Position) -> Size {
         unsafe {
+            cairo_move_to(w.context, p.x, p.y);
             let layout = pango_cairo_create_layout(w.context);
             pango_layout_set_text(
                 layout, CString::new(self.as_ref()).unwrap().as_ptr(), -1);

@@ -1,6 +1,5 @@
 mod text;
 mod context;
-pub use drawables::context::{
-    Config,
-    Context
-};
+mod image;
+pub use drawables::context::{Config, Context};
+pub use drawables::image::Image;

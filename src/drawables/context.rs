@@ -1,7 +1,7 @@
 use cairo::*;
 use pango::FontDescription;
 
-use draw::{Draw, Drawable, Size, Color};
+use draw::{Draw, Drawable, Size, Position, Color};
 use window::Window;
 
 #[derive(PartialEq, Debug, Clone)]
@@ -30,17 +30,14 @@ pub struct Context {
 }
 
 impl Drawable for Context {
-    fn draw(&self, w: &mut Window, c: &Config) -> Size {
-        let c = self.derive(c);
+    fn draw(&self, w: &mut Window, c: &Config, p: Position) -> Size {
+        let c: Config = self.derive(c);
         self.children.iter().fold(Size::empty(),
             |size, d| {
                 unsafe { cairo_set_source_rgb(
                     w.context, c.color.red, c.color.green, c.color.blue) }
-                let s = d.draw(w, &c);
-                unsafe {
-                    cairo_rel_move_to(w.context, s.width as f64, 0.0);
-                }
-                s + size
+                let s = d.draw(w, &c, p + size);
+                size + s
             }
         )
     }

@@ -1,26 +1,63 @@
-use std::ops::Add;
+use std::ops::{Add, Sub};
 
 use window::Window;
-use drawables::{Config, Context};
+use drawables::{Config, Context, Image};
 
 #[derive(Debug, PartialEq, Clone)]
 pub enum Draw {
     Text(String),
     Context(Context),
+    Image(Image)
 }
 
 impl Drawable for Draw {
-    fn draw(&self, window: &mut Window, config: &Config) -> Size {
+    fn draw(&self, window: &mut Window, config: &Config, position: Position) -> Size {
             match *self {
-                Draw::Text(ref t) => t.draw(window, config),
-                Draw::Context(ref c) => c.draw(window, config)
+                Draw::Text(ref t) => t.draw(window, config, position),
+                Draw::Context(ref c) => c.draw(window, config, position),
+                Draw::Image(ref i) => i.draw(window, config, position),
             }
     }
 }
 
 pub trait Drawable {
-    fn draw(&self, w: &mut Window, c: &Config) -> Size;
+    fn draw(&self, w: &mut Window, c: &Config, p: Position) -> Size;
     // fn size(&self)
+}
+
+#[derive(Debug, PartialEq, Clone, Copy)]
+pub struct Position {
+    pub x: f64,
+    pub y: f64,
+}
+
+impl Position {
+    pub fn origin() -> Position {
+        Position {
+            x: 0.0,
+            y: 0.0,
+        }
+    }
+}
+
+impl Sub<Size> for Position {
+    type Output = Position;
+    fn sub(self, other: Size) -> Position {
+        Position {
+            x: self.x - other.width as f64,
+            y: self.y - other.height as f64,
+        }
+    }
+}
+
+impl Add<Size> for Position {
+    type Output = Position;
+    fn add(self, other: Size) -> Position {
+        Position {
+            x: self.x + other.width as f64,
+            y: self.y + other.height as f64,
+        }
+    }
 }
 
 #[derive(Debug,Copy,Clone)]
@@ -40,7 +77,7 @@ impl Size {
 
 impl Add for Size {
     type Output = Size;
-    fn add(self, other: Self) -> Self {
+    fn add(self, other: Size) -> Size {
         Size {
             height: self.height,
             width: self.width + other.width,

@@ -15,8 +15,10 @@ license = "MIT"
 cairo-sys-rs = { git = "https://github.com/gtk-rs/cairo", features = ["xlib"]}
 pango = { git = "https://github.com/ludat/pango" }
 # cairo-rs = { path = "../mycairo/", features = ["xlib"]}
+gdk-pixbuf = { git = "https://github.com/gtk-rs/gdk-pixbuf" }
 glib = { git = "https://github.com/gtk-rs/glib" }
 gobject-sys = { git = "https://github.com/gtk-rs/sys" }
+gdk-sys = { git = "https://github.com/gtk-rs/sys" }
 pango-sys = { git = "https://github.com/gtk-rs/sys" }
 nom = "1.2.3"
 x11 = "2.6.1"
