@@ -41,50 +41,13 @@ fn main() {
             IResult::Done(b"", children) => {
                 use std::path::Path;
                 use draw::Draw;
-                base.children = vec![
-                    Draw::Image(
-                        Image::new(
-                            Path::new("/home/ludat/Pictures/icon.png")
-                                .to_path_buf()
-                        ).unwrap()
-                    ),
-                    Draw::Image(
-                        Image::new(
-                            Path::new("/home/ludat/Pictures/icon.png")
-                                .to_path_buf()
-                        ).unwrap()
-                    ),
-                    Draw::Image(
-                        Image::new(
-                            Path::new("/home/ludat/Pictures/icon.png")
-                                .to_path_buf()
-                        ).unwrap()
-                    ),
-                    Draw::Image(
-                        Image::new(
-                            Path::new("/home/ludat/Pictures/icon.png")
-                                .to_path_buf()
-                        ).unwrap()
-                    ),
-                    Draw::Image(
-                        Image::new(
-                            Path::new("/home/ludat/Pictures/icon.png")
-                                .to_path_buf()
-                        ).unwrap()
-                    ),
-                    Draw::Image(
-                        Image::new(
-                            Path::new("/home/ludat/Pictures/icon.png")
-                                .to_path_buf()
-                        ).unwrap()
-                    ),
-                ];
+                base.children = children;
                 w.clear(Color::black());
                 println!("{:?}", base.children);
                 base.draw(&mut w, &root, Position::origin());
                 w.flush();
             },
-            _ => { println!("Parsing failed") },
+            e => { println!("Parsing failed {:?}", e) },
         }
     }
 }

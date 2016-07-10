@@ -29,20 +29,6 @@ pub struct Context {
     pub children: Vec<Draw>,
 }
 
-impl Drawable for Context {
-    fn draw(&self, w: &mut Window, c: &Config, p: Position) -> Size {
-        let c: Config = self.derive(c);
-        self.children.iter().fold(Size::empty(),
-            |size, d| {
-                unsafe { cairo_set_source_rgb(
-                    w.context, c.color.red, c.color.green, c.color.blue) }
-                let s = d.draw(w, &c, p + size);
-                size + s
-            }
-        )
-    }
-}
-
 impl Context {
     pub fn empty() -> Context {
         Context {
@@ -75,5 +61,19 @@ impl Context {
     pub fn alpha(mut self, alpha: f64) -> Context {
         self.alpha = Some(alpha);
         self
+    }
+}
+
+impl Drawable for Context {
+    fn draw(&self, w: &mut Window, c: &Config, p: Position) -> Size {
+        let c: Config = self.derive(c);
+        self.children.iter().fold(Size::empty(),
+            |size, d| {
+                unsafe { cairo_set_source_rgb(
+                    w.context, c.color.red, c.color.green, c.color.blue) }
+                let s = d.draw(w, &c, p + size);
+                size + s
+            }
+        )
     }
 }

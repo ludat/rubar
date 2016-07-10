@@ -1,12 +1,32 @@
 use super::font::font;
 use super::color::color;
-use super::text::{text};
+use super::text::text;
+use super::image::image;
 use pango::FontDescription;
 
 use nom::{space, be_f64};
 
 use drawables::{Context};
 use draw::{Draw, Color};
+
+named!(pub draw( &[u8] ) -> Vec<Draw>,
+       many0!(
+           alt!(
+               map!(
+                   image,
+                   Draw::Image
+               ) |
+               map!(
+                   context,
+                   Draw::Context
+               ) |
+               map!(
+                   text,
+                   Draw::Text
+               )
+           )
+       )
+);
 
 named!(pub context( &[u8] ) -> Context,
        chain!(
@@ -23,21 +43,6 @@ named!(pub context( &[u8] ) -> Context,
            map!(draw, |children| { ctx.children = children }) ~
            tag!("}"),
            || ctx
-       )
-);
-
-named!(pub draw( &[u8] ) -> Vec<Draw> ,
-       many0!(
-           alt!(
-               map!(
-                   context,
-                   Draw::Context
-               ) |
-               map!(
-                   text,
-                   Draw::Text
-               )
-           )
        )
 );
 
