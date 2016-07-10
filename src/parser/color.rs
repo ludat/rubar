@@ -1,6 +1,45 @@
 use draw::Color;
 
 
+named!(pub color ( &[u8] ) -> Color,
+       alt!(
+           hexcolor |
+           literal_color
+       )
+);
+
+named!(literal_color ( &[u8] ) -> Color,
+       alt!(
+           map!(tag!("white"),
+               |_| Color::white()
+           ) |
+           map!(tag!("grey"),
+               |_| Color::grey()
+           ) |
+           map!(tag!("black"),
+               |_| Color::black()
+           ) |
+           map!(tag!("red"),
+               |_| Color::red()
+           ) |
+           map!(tag!("green"),
+               |_| Color::green()
+           ) |
+           map!(tag!("blue"),
+               |_| Color::blue()
+           ) |
+           map!(tag!("cyan"),
+               |_| Color::cyan()
+           ) |
+           map!(tag!("yellow"),
+               |_| Color::yellow()
+           ) |
+           map!(tag!("purple"),
+               |_| Color::purple()
+           )
+       )
+);
+
 named!(hexcolor( &[u8] ) -> Color,
        chain!(
            tag!("#") ~
@@ -56,10 +95,10 @@ mod tests {
     use nom::ErrorKind;
 
     use draw::Color;
-    use super::hexcolor;
 
     #[test]
-    fn t_hexcolor() {
+    fn hexcolor() {
+        use super::hexcolor;
         let empty = &b""[..];
         assert_eq!(hexcolor(b"#ffffff"),
                    Done(empty, Color::new(1.0,1.0,1.0)));
@@ -75,4 +114,31 @@ mod tests {
                    Error(Position(ErrorKind::Tag, &b"jjjjjjj"[..])));
     }
 
+    #[test]
+    fn literal_color() {
+        use super::literal_color;
+        let empty = &b""[..];
+        assert_eq!(literal_color(b"red"),
+                   Done(empty, Color::red()));
+        assert_eq!(literal_color(b"black"),
+                   Done(empty, Color::black()));
+        assert_eq!(literal_color(b"jjjjjjj"),
+                   Error(Position(ErrorKind::Alt, &b"jjjjjjj"[..])));
+    }
+
+    #[test]
+    fn color() {
+        use super::color;
+        let empty = &b""[..];
+        assert_eq!(color(b"red"),
+                   Done(empty, Color::red()));
+        assert_eq!(color(b"black"),
+                   Done(empty, Color::black()));
+        assert_eq!(color(b"#ffffff"),
+                   Done(empty, Color::new(1.0,1.0,1.0)));
+        assert_eq!(color(b"#000000"),
+                   Done(empty, Color::new(0.0,0.0,0.0)));
+        assert_eq!(color(b"jjjjjjj"),
+                   Error(Position(ErrorKind::Alt, &b"jjjjjjj"[..])));
+    }
 }
