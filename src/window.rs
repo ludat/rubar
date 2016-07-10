@@ -76,8 +76,6 @@ impl Window {
                 panic!("can't set WM protocols");
             }
 
-            println!("before");
-
             let net_wm_window_type = CString::new("_NET_WM_WINDOW_TYPE").unwrap();
             let net_wm_window_type_dock = CString::new("_NET_WM_WINDOW_TYPE_DOCK").unwrap();
             let net_wm_state = CString::new("_NET_WM_STATE").unwrap();

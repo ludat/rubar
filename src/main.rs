@@ -32,10 +32,6 @@ fn main() {
     w.clear(Color::black());
     w.flush();
 
-    // let thing: IResult<&str, Vec<Box<Drawable>>> = drawables("leleel {bla}");
-    // let thing = parser::drawables("leleel {} ble");
-    // println!("the thing: {:?}", thing);
-
     let stdin = io::stdin();
     let root = Config::new("Terminus 10", Color::white(), 0.0);
     for line in stdin.lock().lines() {
