@@ -13,7 +13,7 @@ license = "MIT"
 
 [dependencies]
 cairo-sys-rs = { git = "https://github.com/gtk-rs/cairo", features = ["xlib"]}
-pango = { git = "https://github.com/gtk-rs/pango" }
+pango = { git = "https://github.com/ludat/pango" }
 # cairo-rs = { path = "../mycairo/", features = ["xlib"]}
 glib = { git = "https://github.com/gtk-rs/glib" }
 gobject-sys = { git = "https://github.com/gtk-rs/sys" }

@@ -11,7 +11,6 @@ extern crate nom;
 use std::io;
 use std::io::BufRead;
 
-use cairo::*;
 mod pangocairo_gen;
 use nom::IResult;
 
@@ -36,17 +35,15 @@ fn main() {
     let root = Config::new("Terminus 10", Color::white(), 0.0);
     for line in stdin.lock().lines() {
         let mut base = Context::empty();
-        if let IResult::Done(_, children) = parser::drawables(&line.unwrap().into_bytes()) {
-            println!("{:?}", children);
-            base.children = children;
-            w.clear(Color::black());
-            unsafe {
-                cairo_move_to(w.context, 0.0, 0.0);
-                base._draw(&mut w, &root);
-            }
-            w.flush();
-        } else {
-            println!("Failed parsing");
-        };
+        match parser::draw(&line.unwrap().into_bytes()) {
+            IResult::Done(b"", children) => {
+                println!("{:?}", children);
+                base.children = children;
+                w.clear(Color::black());
+                base.draw(&mut w, &root);
+                w.flush();
+            },
+            _ => { println!("Parsing failed") },
+        }
     }
 }

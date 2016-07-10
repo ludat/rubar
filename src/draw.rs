@@ -1,11 +1,25 @@
 use std::ops::Add;
-use std::fmt::Debug;
 
 use window::Window;
-use drawables::Config;
+use drawables::{Config, Context};
 
-pub trait Drawable : Debug {
-    unsafe fn _draw(&self, w: &mut Window, c: &Config) -> Size;
+#[derive(Debug, PartialEq, Clone)]
+pub enum Draw {
+    Text(String),
+    Context(Context),
+}
+
+impl Drawable for Draw {
+    fn draw(&self, window: &mut Window, config: &Config) -> Size {
+            match *self {
+                Draw::Text(ref t) => t.draw(window, config),
+                Draw::Context(ref c) => c.draw(window, config)
+            }
+    }
+}
+
+pub trait Drawable {
+    fn draw(&self, w: &mut Window, c: &Config) -> Size;
     // fn size(&self)
 }
 

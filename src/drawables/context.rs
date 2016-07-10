@@ -1,11 +1,10 @@
-use std::fmt;
-
 use cairo::*;
 use pango::FontDescription;
 
-use draw::{Drawable, Size, Color};
+use draw::{Draw, Drawable, Size, Color};
 use window::Window;
 
+#[derive(PartialEq, Debug, Clone)]
 pub struct Config {
     pub font: FontDescription,
     pub color: Color,
@@ -22,22 +21,25 @@ impl Config {
     }
 }
 
+#[derive(PartialEq, Debug, Clone)]
 pub struct Context {
     pub font: Option<FontDescription>,
     pub color: Option<Color>,
     pub alpha: Option<f64>,
-    pub children: Vec<Box<Drawable>>,
+    pub children: Vec<Draw>,
 }
 
 impl Drawable for Context {
-    unsafe fn _draw(&self, w: &mut Window, c: &Config) -> Size {
+    fn draw(&self, w: &mut Window, c: &Config) -> Size {
         let c = self.derive(c);
         self.children.iter().fold(Size::empty(),
             |size, d| {
-                cairo_set_source_rgb(
-                    w.context, c.color.red, c.color.green, c.color.blue);
-                let s = d._draw(w, &c);
-                cairo_rel_move_to(w.context, s.width as f64, 0.0);
+                unsafe { cairo_set_source_rgb(
+                    w.context, c.color.red, c.color.green, c.color.blue) }
+                let s = d.draw(w, &c);
+                unsafe {
+                    cairo_rel_move_to(w.context, s.width as f64, 0.0);
+                }
                 s + size
             }
         )
@@ -61,14 +63,20 @@ impl Context {
             alpha: self.alpha.unwrap_or(c.alpha),
         }
     }
-    pub fn push(&mut self, d: Box<Drawable>) -> &mut Context {
+    pub fn push(mut self, d: Draw) -> Context {
         self.children.push(d);
         self
     }
-}
-
-impl fmt::Debug for Context {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "Context")
+    pub fn color(mut self, color: Color) -> Context {
+        self.color = Some(color);
+        self
+    }
+    pub fn font(mut self, font: FontDescription) -> Context {
+        self.font = Some(font);
+        self
+    }
+    pub fn alpha(mut self, alpha: f64) -> Context {
+        self.alpha = Some(alpha);
+        self
     }
 }

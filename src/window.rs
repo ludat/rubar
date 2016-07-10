@@ -215,6 +215,7 @@ impl Window {
 
     pub fn clear(&mut self, color: Color) {
         unsafe {
+            cairo_move_to(self.context, 0.0, 0.0);
             cairo_set_source_rgb(
                 self.context, color.red, color.green, color.blue);
             cairo_rectangle (
