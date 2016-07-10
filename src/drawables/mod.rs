@@ -1,8 +1,8 @@
 mod text;
 mod context;
 pub use drawables::context::{
-    Context,
-    ContextBuilder
+    Config,
+    Context
 };
 // use draw::{Drawable, Size};
 // use window::Window;

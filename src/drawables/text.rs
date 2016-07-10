@@ -8,12 +8,12 @@ use glib::translate::ToGlibPtr;
 
 use window::Window;
 
-use drawables::Context;
+use drawables::Config;
 use draw::Drawable;
 use draw::Size;
 
 impl<T> Drawable for T where T: AsRef<str> + Debug {
-    unsafe fn _draw(&self, w: &mut Window, c: &Context) -> Size {
+    unsafe fn _draw(&self, w: &mut Window, c: &Config) -> Size {
         let layout = pango_cairo_create_layout(w.context);
         pango_layout_set_text(
             layout, CString::new(self.as_ref()).unwrap().as_ptr(), -1);

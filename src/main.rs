@@ -22,7 +22,7 @@ mod parser;
 use draw::Color;
 use window::Window;
 use draw::Drawable;
-use drawables::{Context, ContextBuilder};
+use drawables::{Config, Context};
 
 const WIDTH: i32 = 1000;
 const HEIGHT: i32 = 20;
@@ -37,9 +37,9 @@ fn main() {
     // println!("the thing: {:?}", thing);
 
     let stdin = io::stdin();
-    let root = Context::new("Terminus 10", Color::white(), 0.0);
+    let root = Config::new("Terminus 10", Color::white(), 0.0);
     for line in stdin.lock().lines() {
-        let mut base = ContextBuilder::empty();
+        let mut base = Context::empty();
         if let IResult::Done(_, children) = parser::drawables(&line.unwrap().into_bytes()) {
             println!("{:?}", children);
             base.children = children;
