@@ -38,6 +38,12 @@ impl Position {
             y: 0.0,
         }
     }
+    pub fn new(x: f64, y: f64) -> Position {
+        Position {
+            x: x,
+            y: y
+        }
+    }
 }
 
 impl Sub<Size> for Position {
@@ -60,13 +66,19 @@ impl Add<Size> for Position {
     }
 }
 
-#[derive(Debug,Copy,Clone)]
+#[derive(Debug, Copy, Clone, PartialEq)]
 pub struct Size {
     pub height: i32,
     pub width: i32,
 }
 
 impl Size {
+    pub fn new(width: i32, height: i32) -> Size {
+        Size {
+            height: height,
+            width: width,
+        }
+    }
     pub fn empty() -> Size {
         Size {
             height: 0,
