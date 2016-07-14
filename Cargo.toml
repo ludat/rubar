@@ -3,7 +3,7 @@ name = "rubar"
 version = "0.1.0"
 authors = ["Lucas David Traverso <lucas6246@gmail.com>"]
 
-build = "build.rs"
+# build = "build.rs"
 
 description = "Status bar for x11 with the power of graphics"
 repository = "https://github.com/ludat/rubar"
