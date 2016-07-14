@@ -1,10 +1,13 @@
+use std::str::from_utf8;
+use std::str::FromStr;
+
 use super::font::font;
 use super::color::color;
 use super::text::text;
 use super::image::image;
 use pango::FontDescription;
 
-use nom::{space, be_f64};
+use nom::{space, digit};
 
 use drawables::{Context};
 use draw::{Draw, Color};
@@ -67,7 +70,13 @@ named!(color_prop( &[u8] ) -> Color,
 named!(alpha_prop( &[u8] ) -> f64,
        chain!(
            tag!("alpha=") ~
-           a: be_f64 ~
+               a: map_res!(
+                   map_res!(
+                       digit,
+                       from_utf8
+                   ),
+                   FromStr::from_str
+               ) ~
            space?,
            || a
        )
